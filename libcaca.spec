@@ -98,7 +98,7 @@ Statyczna biblioteka libcaca.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mv doc/man/man3caca doc/man/man3
+#mv doc/man/man3caca doc/man/man3
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
