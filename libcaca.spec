@@ -50,7 +50,7 @@ Ró¿nice w stosunku do AAlib s± nastêpuj±ce:
 - proste kszta³ty duszków (sprites)
 
 Ale libcaca ma tak¿e nastêpuj±ce ograniczenia:
-- brak obs³ugi jasno¶ci, kontrakstu, korekcji gamma
+- brak obs³ugi jasno¶ci, kontrastu, korekcji gamma
 - ma³o wydajne algorytmy wyboru znaków
 - brak obs³ugi klawiatury w trybie surowym
 
