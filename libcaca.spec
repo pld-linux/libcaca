@@ -1,14 +1,16 @@
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl):	Biblioteka graficzna wy¶wietlaj±ca tekst zamiast pikseli
 Name:		libcaca
-Version:	0.5
+Version:	0.6
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.tar.bz2
-# Source0-md5:	be42552eace04fd0c02343b8b6c6b308
+# Source0-md5:	0540e5c24aa6747c67805958185afe3b
+URL:		http://sam.zoy.org/projects/libcaca/
 BuildRequires:	XFree86-devel
-#BuildRequires:	ncurses-devel
+BuildRequires:	imlib2-devel
+BuildRequires:	slang-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -36,7 +38,8 @@ But libcaca also has the following limitations:
 %configure \
 	--prefix=%{_prefix} \
 	--enable-x11 \
-	--disable-ncurses
+	--disable-ncurses \
+	--enable-slang
 
 %{__make}
 
