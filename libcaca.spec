@@ -17,6 +17,7 @@ BuildRequires:	slang-devel
 # shouldn't these be in doxygen requirements?
 BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-makeindex
+BuildRequires:	tetex-metafont
 BuildRequires:	XFree86-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -97,7 +98,7 @@ Statyczna biblioteka libcaca.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
+mv doc/man/man3caca doc/man/man3
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
