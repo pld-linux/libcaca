@@ -1,19 +1,23 @@
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl):	Biblioteka graficzna wy¶wietlaj±ca tekst zamiast pikseli
 Name:		libcaca
-Version:	0.6
+Version:	0.8
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.tar.bz2
-# Source0-md5:	0540e5c24aa6747c67805958185afe3b
-Patch0:		%{name}-shared.patch
+# Source0-md5:	15c82b1b91b6e2c4c15f131cd31fa578
 URL:		http://sam.zoy.org/projects/libcaca/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
+BuildRequires:	doxygen
 BuildRequires:	imlib2-devel
 BuildRequires:	libtool
 BuildRequires:	slang-devel
+# shouldn't these be in doxygen requirements?
+BuildRequires:	tetex-fonts-jknappen
+BuildRequires:	tetex-makeindex
+BuildRequires:	XFree86-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fomit-frame-pointer
@@ -76,7 +80,6 @@ Statyczna biblioteka libcaca.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -85,7 +88,7 @@ Statyczna biblioteka libcaca.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-x11 \
+	--enable-x11 \
 	--disable-ncurses \
 	--enable-slang
 
@@ -98,38 +101,49 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 # replace symlink by groff include
-rm -f $RPM_BUILD_ROOT%{_mandir}/man1/cacafire.1
+rm -f $RPM_BUILD_ROOT%{_mandir}/man1/caca{ball,fire,moir,plas}.1
+echo '.so cacademo.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacaball.1
 echo '.so cacademo.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacafire.1
+echo '.so cacademo.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacamoir.1
+echo '.so cacademo.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacaplas.1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+#%post	-p /sbin/ldconfig
+#%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS BUGS ChangeLog NEWS NOTES README TODO
-%attr(755,root,root) %{_bindir}/caca-spritedit
+%attr(755,root,root) %{_bindir}/cacaball
 %attr(755,root,root) %{_bindir}/cacademo
 %attr(755,root,root) %{_bindir}/cacafire
+%attr(755,root,root) %{_bindir}/cacamoir
+%attr(755,root,root) %{_bindir}/cacaplas
 %attr(755,root,root) %{_bindir}/cacaview
-%attr(755,root,root) %{_libdir}/libcaca.so.*.*.*
+#%attr(755,root,root) %{_libdir}/libcaca.so.*.*.*
+
 %{_datadir}/%{name}
-%{_mandir}/man1/caca-spritedit.1*
+%{_mandir}/man1/cacaball.1*
 %{_mandir}/man1/cacademo.1*
 %{_mandir}/man1/cacafire.1*
+%{_mandir}/man1/cacamoir.1*
+%{_mandir}/man1/cacaplas.1*
 %{_mandir}/man1/cacaview.1*
 
 %files devel
 %defattr(644,root,root,755)
 %doc doc/html/*
 %attr(755,root,root) %{_bindir}/caca-config
-%attr(755,root,root) %{_libdir}/libcaca.so
-%{_libdir}/libcaca.la
+#%attr(755,root,root) %{_libdir}/libcaca.so
+#%{_libdir}/libcaca.la
+%{_libdir}/libcaca.a
+%{_libdir}/libcaca_pic.a
 %{_includedir}/*.h
+%{_mandir}/man1/caca-config.1*
 # man3 pages have too common base names to be included
 
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/libcaca.a
+#%files static
+#%defattr(644,root,root,755)
+#%{_libdir}/libcaca.a
