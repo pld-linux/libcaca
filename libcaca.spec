@@ -8,7 +8,7 @@ Group:		Libraries
 Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.tar.bz2
 # Source0-md5:	0540e5c24aa6747c67805958185afe3b
 URL:		http://sam.zoy.org/projects/libcaca/
-BuildRequires:	XFree86-devel
+#BuildRequires:	XFree86-devel
 BuildRequires:	imlib2-devel
 BuildRequires:	slang-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -37,7 +37,7 @@ But libcaca also has the following limitations:
 # TODO: fix configure, so it can find ncurses includes
 %configure \
 	--prefix=%{_prefix} \
-	--enable-x11 \
+	--disable-x11 \
 	--disable-ncurses \
 	--enable-slang
 
