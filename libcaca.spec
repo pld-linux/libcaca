@@ -57,7 +57,8 @@ Ale libcaca ma tak¿e nastêpuj±ce ograniczenia:
 Summary:	Header files for libcaca library
 Summary(pl):	Pliki nag³ówkowe biblioteki libcaca
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+# to be restored when switching to shared lib
+#Requires:	%{name} = %{version}-%{release}
 Requires:	slang-devel
 
 %description devel
