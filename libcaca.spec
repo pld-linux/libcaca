@@ -1,12 +1,12 @@
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl):	Biblioteka graficzna wy¶wietlaj±ca tekst zamiast pikseli
 Name:		libcaca
-Version:	0.8
+Version:	0.9
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.tar.bz2
-# Source0-md5:	15c82b1b91b6e2c4c15f131cd31fa578
+# Source0-md5:	c7d5c46206091a9203fcb214abb25e4a
 URL:		http://sam.zoy.org/projects/libcaca/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
