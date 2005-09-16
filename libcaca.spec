@@ -2,7 +2,7 @@ Summary:	Graphics library that outputs text instead of pixels
 Summary(pl):	Biblioteka graficzna wy¶wietlaj±ca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.9
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Libraries
 Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.tar.bz2
@@ -13,7 +13,7 @@ BuildRequires:	automake
 BuildRequires:	doxygen
 BuildRequires:	imlib2-devel
 BuildRequires:	libtool
-BuildRequires:	slang-devel
+BuildRequires:	slang-devel >= 2.0.0
 # shouldn't these be in doxygen requirements?
 BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-makeindex
