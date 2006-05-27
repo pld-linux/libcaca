@@ -1,24 +1,26 @@
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl):	Biblioteka graficzna wy鈍ietlaj帷a tekst zamiast pikseli
 Name:		libcaca
-Version:	0.9
-Release:	2
-License:	LGPL
+Version:	0.99
+%define	bver	beta1
+Release:	0.%{bver}.1
+License:	WTFPL
 Group:		Libraries
-Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.tar.bz2
+Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.%{bver}.tar.gz
 # Source0-md5:	c7d5c46206091a9203fcb214abb25e4a
 URL:		http://sam.zoy.org/projects/libcaca/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	doxygen
 BuildRequires:	imlib2-devel
+BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	slang-devel >= 2.0.0
 # shouldn't these be in doxygen requirements?
 BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-makeindex
 BuildRequires:	tetex-metafont
-BuildRequires:	XFree86-devel
+BuildRequires:	xorg-lib-libX11-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fomit-frame-pointer
@@ -58,9 +60,10 @@ Ale libcaca ma tak瞠 nast瘼uj帷e ograniczenia:
 Summary:	Header files for libcaca library
 Summary(pl):	Pliki nag堯wkowe biblioteki libcaca
 Group:		Development/Libraries
-# to be restored when switching to shared lib
-#Requires:	%{name} = %{version}-%{release}
-Requires:	slang-devel
+Requires:	%{name} = %{version}-%{release}
+Requires:	imlib2-devel
+Requires:	slang-devel >= 2.0.0
+Requires:	xorg-lib-libX11-devel
 
 %description devel
 Header files for libcaca library.
@@ -80,8 +83,46 @@ Static libcaca library.
 %description static -l pl
 Statyczna biblioteka libcaca.
 
+%package c++
+Summary:	C++ bindings for libcaca
+Summary(pl):	Wi您ania C++ do libcaca
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description c++
+C++ bindings for libcaca.
+
+%description c++ -l pl
+Wi您ania C++ do libcaca.
+
+%package c++-devel
+Summary:	C++ bindings for libcaca - header files
+Summary(pl):	Wi您ania C++ do libcaca - pliki nag堯wkowe
+Group:		Development/Libraries
+Requires:	%{name}-c++ = %{version}-%{release}
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	libstdc++-devel
+
+%description c++-devel
+C++ bindings for libcaca - header files.
+
+%description c++-devel -l pl
+Wi您ania C++ do libcaca - pliki nag堯wkowe.
+
+%package c++-static
+Summary:	C++ bindings for libcaca - static libraries
+Summary(pl):	Wi您ania C++ do libcaca - biblioteki statyczne
+Group:		Development/Libraries
+Requires:	%{name}-c++-devel = %{version}-%{release}
+
+%description c++-static
+C++ bindings for libcaca - static libraries.
+
+%description c++-static -l pl
+Wi您ania C++ do libcaca - biblioteki statyczne.
+
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}.%{bver}
 
 %build
 %{__libtoolize}
@@ -90,45 +131,48 @@ Statyczna biblioteka libcaca.
 %{__autoheader}
 %{__automake}
 %configure \
-	--enable-x11 \
+	--disable-gl \
 	--disable-ncurses \
-	--enable-slang
+	--enable-cpp \
+	--enable-slang \
+	--enable-x11
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mv doc/man/man3caca doc/man/man3
+#mv doc/man/man3caca doc/man/man3
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 # replace symlink by groff include
-rm -f $RPM_BUILD_ROOT%{_mandir}/man1/caca{ball,fire,moir,plas}.1
-echo '.so cacademo.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacaball.1
-echo '.so cacademo.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacafire.1
-echo '.so cacademo.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacamoir.1
-echo '.so cacademo.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacaplas.1
+rm -f $RPM_BUILD_ROOT%{_mandir}/man1/caca{ball,moir,plas}.1
+echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacaball.1
+echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacamoir.1
+echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacaplas.1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-#%post	-p /sbin/ldconfig
-#%postun	-p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS BUGS ChangeLog NEWS NOTES README TODO
+%doc AUTHORS COPYING ChangeLog NEWS NOTES README THANKS TODO
 %attr(755,root,root) %{_bindir}/cacaball
-%attr(755,root,root) %{_bindir}/cacademo
 %attr(755,root,root) %{_bindir}/cacafire
 %attr(755,root,root) %{_bindir}/cacamoir
 %attr(755,root,root) %{_bindir}/cacaplas
+%attr(755,root,root) %{_bindir}/cacaplay
+%attr(755,root,root) %{_bindir}/cacaserver
 %attr(755,root,root) %{_bindir}/cacaview
-#%attr(755,root,root) %{_libdir}/libcaca.so.*.*.*
+%attr(755,root,root) %{_bindir}/img2irc
+%attr(755,root,root) %{_libdir}/libcaca.so.*.*.*
+%attr(755,root,root) %{_libdir}/libcucul.so.*.*.*
 
 %{_datadir}/%{name}
 %{_mandir}/man1/cacaball.1*
-%{_mandir}/man1/cacademo.1*
 %{_mandir}/man1/cacafire.1*
 %{_mandir}/man1/cacamoir.1*
 %{_mandir}/man1/cacaplas.1*
@@ -138,14 +182,37 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc doc/html/*
 %attr(755,root,root) %{_bindir}/caca-config
-#%attr(755,root,root) %{_libdir}/libcaca.so
-#%{_libdir}/libcaca.la
-%{_libdir}/libcaca.a
-%{_libdir}/libcaca_pic.a
-%{_includedir}/*.h
+%attr(755,root,root) %{_libdir}/libcaca.so
+%attr(755,root,root) %{_libdir}/libcucul.so
+%{_libdir}/libcaca.la
+%{_libdir}/libcucul.la
+%{_includedir}/caca.h
+%{_includedir}/cucul.h
+%{_pkgconfigdir}/caca.pc
+%{_pkgconfigdir}/cucul.pc
 %{_mandir}/man1/caca-config.1*
 # man3 pages have too common base names to be included
 
-#%files static
-#%defattr(644,root,root,755)
-#%{_libdir}/libcaca.a
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libcaca.a
+%{_libdir}/libcucul.a
+
+%files c++
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcaca++.so.*.*.*
+%attr(755,root,root) %{_libdir}/libcucul++.so.*.*.*
+
+%files c++-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcaca++.so
+%attr(755,root,root) %{_libdir}/libcucul++.so
+%{_libdir}/libcaca++.la
+%{_libdir}/libcucul++.la
+%{_includedir}/caca++.h
+%{_includedir}/cucul++.h
+
+%files c++-static
+%defattr(644,root,root,755)
+%{_libdir}/libcaca++.a
+%{_libdir}/libcucul++.a
