@@ -7,7 +7,7 @@ Release:	0.%{bver}.1
 License:	WTFPL
 Group:		Libraries
 Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.%{bver}.tar.gz
-# Source0-md5:	c7d5c46206091a9203fcb214abb25e4a
+# Source0-md5:	ffe4c3cda32f4505fde7c39d3c2c60dd
 URL:		http://sam.zoy.org/projects/libcaca/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
