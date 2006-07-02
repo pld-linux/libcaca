@@ -2,13 +2,14 @@ Summary:	Graphics library that outputs text instead of pixels
 Summary(pl):	Biblioteka graficzna wy¶wietlaj±ca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
-%define	bver	beta1
+%define	bver	beta2
 Release:	0.%{bver}.1
 License:	WTFPL
 Group:		Libraries
-Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.%{bver}.tar.gz
-# Source0-md5:	ffe4c3cda32f4505fde7c39d3c2c60dd
-URL:		http://sam.zoy.org/projects/libcaca/
+Source0:	http://sam.zoy.org/libcaca/%{name}-%{version}.%{bver}.tar.gz
+# Source0-md5:	ba794c8249e55ff61a70a0988f3b0fb8
+Patch0:		%{name}-update.patch
+URL:		http://sam.zoy.org/libcaca/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	doxygen
@@ -123,6 +124,7 @@ Wi±zania C++ do libcaca - biblioteki statyczne.
 
 %prep
 %setup -q -n %{name}-%{version}.%{bver}
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -133,7 +135,7 @@ Wi±zania C++ do libcaca - biblioteki statyczne.
 %configure \
 	--disable-gl \
 	--disable-ncurses \
-	--enable-cpp \
+	--enable-cxx \
 	--enable-slang \
 	--enable-x11
 
