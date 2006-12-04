@@ -2,13 +2,15 @@ Summary:	Graphics library that outputs text instead of pixels
 Summary(pl):	Biblioteka graficzna wy¶wietlaj±ca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
-%define	bver	beta4
+%define	bver	beta11
 Release:	0.%{bver}.1
 License:	WTFPL
 Group:		Libraries
-Source0:	http://sam.zoy.org/libcaca/%{name}-%{version}.%{bver}.tar.gz
-# Source0-md5:	7d9d9b9e093e5235980716278636a67d
-URL:		http://sam.zoy.org/libcaca/
+Source0:	http://libcaca.zoy.org/files/%{name}-%{version}.%{bver}.tar.gz
+# Source0-md5:	94f3ae45b9d7fed43a6511452e880937
+URL:		http://libcaca.zoy.org/
+BuildRequires:	OpenGL-devel
+BuildRequires:	OpenGL-glut-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	doxygen
@@ -56,14 +58,50 @@ Ale libcaca ma tak¿e nastêpuj±ce ograniczenia:
 - ma³o wydajne algorytmy wyboru znaków
 - brak obs³ugi klawiatury w trybie surowym
 
+%package plugin-GL
+Summary:	GL plugin for libcaca library
+Summary(pl):	Wtyczka GL dla biblioteki libcaca
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description plugin-GL
+GL plugin for libcaca library.
+
+%description plugin-GL -l pl
+Wtyczka GL dla biblioteki libcaca.
+
+%package plugin-X11
+Summary:	X11 plugin for libcaca library
+Summary(pl):	Wtyczka X11 dla biblioteki libcaca
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description plugin-X11
+X11 plugin for libcaca library.
+
+%description plugin-X11 -l pl
+Wtyczka X11 dla biblioteki libcaca.
+
+%package img
+Summary:	libcaca-based image viewer and converter
+Summary(pl):	Przegl±darka i konwerter obrazków oparte na libcaca
+Group:		Applications/Graphics
+Requires:	%{name} = %{version}-%{release}
+
+%description img
+libcaca-based image viewer and converter. They use imlib2 to load
+images.
+
+%description img -l pl
+Przegl±darka i konwerter obrazków oparte na libcaca. Do wczytywania
+obrazków u¿ywaj± biblioteki imlib2.
+
 %package devel
 Summary:	Header files for libcaca library
 Summary(pl):	Pliki nag³ówkowe biblioteki libcaca
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	imlib2-devel
 Requires:	slang-devel >= 2.0.0
-Requires:	xorg-lib-libX11-devel
 
 %description devel
 Header files for libcaca library.
@@ -134,22 +172,29 @@ Wi±zania C++ do libcaca - biblioteki statyczne.
 	--disable-gl \
 	--disable-ncurses \
 	--enable-cxx \
+	--enable-gl \
+	--enable-plugins \
 	--enable-slang \
 	--enable-x11
 
-%{__make}
+# ObjC file not used, use plain CC to link library to avoid C++/ObjC deps
+%{__make} \
+	OBJC="%{__cc}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-#mv doc/man/man3caca doc/man/man3
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 # replace symlink by groff include
-rm -f $RPM_BUILD_ROOT%{_mandir}/man1/caca{ball,moir,plas}.1
-echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacaball.1
-echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacamoir.1
-echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacaplas.1
+rm -f $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
+echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
+
+rm -f $RPM_BUILD_ROOT%{_libdir}/caca/*.{a,la}
+# man3 pages have too common base names to be included
+rm -f $RPM_BUILD_ROOT%{_mandir}/man3/*.3caca
+rm -rf $RPM_BUILD_ROOT%{_docdir}/libcucul-dev
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -160,23 +205,33 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog NEWS NOTES README THANKS TODO
-%attr(755,root,root) %{_bindir}/cacaball
+%attr(755,root,root) %{_bindir}/cacademo
 %attr(755,root,root) %{_bindir}/cacafire
-%attr(755,root,root) %{_bindir}/cacamoir
-%attr(755,root,root) %{_bindir}/cacaplas
 %attr(755,root,root) %{_bindir}/cacaplay
 %attr(755,root,root) %{_bindir}/cacaserver
-%attr(755,root,root) %{_bindir}/cacaview
-%attr(755,root,root) %{_bindir}/img2irc
 %attr(755,root,root) %{_libdir}/libcaca.so.*.*.*
 %attr(755,root,root) %{_libdir}/libcucul.so.*.*.*
-
+%dir %{_libdir}/caca
 %{_datadir}/%{name}
-%{_mandir}/man1/cacaball.1*
+%{_mandir}/man1/cacademo.1*
 %{_mandir}/man1/cacafire.1*
-%{_mandir}/man1/cacamoir.1*
-%{_mandir}/man1/cacaplas.1*
+%{_mandir}/man1/cacaplay.1*
+%{_mandir}/man1/cacaserver.1*
+
+%files plugin-GL
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/caca/libgl_plugin.so*
+
+%files plugin-X11
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/caca/libx11_plugin.so*
+
+%files img
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/cacaview
+%attr(755,root,root) %{_bindir}/img2irc
 %{_mandir}/man1/cacaview.1*
+%{_mandir}/man1/img2irc.1*
 
 %files devel
 %defattr(644,root,root,755)
