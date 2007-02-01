@@ -5,9 +5,9 @@ Version:	0.9
 Release:	2
 License:	LGPL
 Group:		Libraries
-Source0:	http://sam.zoy.org/projects/libcaca/%{name}-%{version}.tar.bz2
+Source0:	http://libcaca.zoy.org/files/%{name}-%{version}.tar.bz2
 # Source0-md5:	c7d5c46206091a9203fcb214abb25e4a
-URL:		http://sam.zoy.org/projects/libcaca/
+URL:		http://libcaca.zoy.org/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	doxygen
