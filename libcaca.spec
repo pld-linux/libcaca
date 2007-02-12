@@ -1,5 +1,5 @@
 Summary:	Graphics library that outputs text instead of pixels
-Summary(pl):	Biblioteka graficzna wy¶wietlaj±ca tekst zamiast pikseli
+Summary(pl.UTF-8):   Biblioteka graficzna wyÅ›wietlajÄ…ca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.9
 Release:	2
@@ -38,25 +38,25 @@ But libcaca also has the following limitations:
 - unefficient character-choosing algorithms
 - no raw keyboard support
 
-%description -l pl
-Biblioteka libcaca to biblioteka graficzna wy¶wietlaj±ca tekst zamiast
-pikseli, dziêki czemu mo¿e dzia³aæ na starszych kartach graficznych
-oraz terminalach tekstowych. Pod tym wzglêdem jest podobna do s³ynnej
+%description -l pl.UTF-8
+Biblioteka libcaca to biblioteka graficzna wyÅ›wietlajÄ…ca tekst zamiast
+pikseli, dziÄ™ki czemu moÅ¼e dziaÅ‚aÄ‡ na starszych kartach graficznych
+oraz terminalach tekstowych. Pod tym wzglÄ™dem jest podobna do sÅ‚ynnej
 biblioteki AAlib.
 
-Ró¿nice w stosunku do AAlib s± nastêpuj±ce:
-- 16 dostêpnych kolorów dla znaków (256 par kolorów)
-- dithering kolorowych obrazów
-- proste kszta³ty duszków (sprites)
+RÃ³Å¼nice w stosunku do AAlib sÄ… nastÄ™pujÄ…ce:
+- 16 dostÄ™pnych kolorÃ³w dla znakÃ³w (256 par kolorÃ³w)
+- dithering kolorowych obrazÃ³w
+- proste ksztaÅ‚ty duszkÃ³w (sprites)
 
-Ale libcaca ma tak¿e nastêpuj±ce ograniczenia:
-- brak obs³ugi jasno¶ci, kontrastu, korekcji gamma
-- ma³o wydajne algorytmy wyboru znaków
-- brak obs³ugi klawiatury w trybie surowym
+Ale libcaca ma takÅ¼e nastÄ™pujÄ…ce ograniczenia:
+- brak obsÅ‚ugi jasnoÅ›ci, kontrastu, korekcji gamma
+- maÅ‚o wydajne algorytmy wyboru znakÃ³w
+- brak obsÅ‚ugi klawiatury w trybie surowym
 
 %package devel
 Summary:	Header files for libcaca library
-Summary(pl):	Pliki nag³ówkowe biblioteki libcaca
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe biblioteki libcaca
 Group:		Development/Libraries
 # to be restored when switching to shared lib
 #Requires:	%{name} = %{version}-%{release}
@@ -65,19 +65,19 @@ Requires:	slang-devel
 %description devel
 Header files for libcaca library.
 
-%description devel -l pl
-Pliki nag³ówkowe biblioteki libcaca.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe biblioteki libcaca.
 
 %package static
 Summary:	Static libcaca library
-Summary(pl):	Statyczna biblioteka libcaca
+Summary(pl.UTF-8):   Statyczna biblioteka libcaca
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static libcaca library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka libcaca.
 
 %prep
