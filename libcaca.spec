@@ -1,5 +1,5 @@
 Summary:	Graphics library that outputs text instead of pixels
-Summary(pl):	Biblioteka graficzna wy¶wietlaj±ca tekst zamiast pikseli
+Summary(pl.UTF-8):   Biblioteka graficzna wyÅ›wietlajÄ…ca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
 %define	bver	beta11
@@ -42,49 +42,49 @@ But libcaca also has the following limitations:
 - unefficient character-choosing algorithms
 - no raw keyboard support
 
-%description -l pl
-Biblioteka libcaca to biblioteka graficzna wy¶wietlaj±ca tekst zamiast
-pikseli, dziêki czemu mo¿e dzia³aæ na starszych kartach graficznych
-oraz terminalach tekstowych. Pod tym wzglêdem jest podobna do s³ynnej
+%description -l pl.UTF-8
+Biblioteka libcaca to biblioteka graficzna wyÅ›wietlajÄ…ca tekst zamiast
+pikseli, dziÄ™ki czemu moÅ¼e dziaÅ‚aÄ‡ na starszych kartach graficznych
+oraz terminalach tekstowych. Pod tym wzglÄ™dem jest podobna do sÅ‚ynnej
 biblioteki AAlib.
 
-Ró¿nice w stosunku do AAlib s± nastêpuj±ce:
-- 16 dostêpnych kolorów dla znaków (256 par kolorów)
-- dithering kolorowych obrazów
-- proste kszta³ty duszków (sprites)
+RÃ³Å¼nice w stosunku do AAlib sÄ… nastÄ™pujÄ…ce:
+- 16 dostÄ™pnych kolorÃ³w dla znakÃ³w (256 par kolorÃ³w)
+- dithering kolorowych obrazÃ³w
+- proste ksztaÅ‚ty duszkÃ³w (sprites)
 
-Ale libcaca ma tak¿e nastêpuj±ce ograniczenia:
-- brak obs³ugi jasno¶ci, kontrastu, korekcji gamma
-- ma³o wydajne algorytmy wyboru znaków
-- brak obs³ugi klawiatury w trybie surowym
+Ale libcaca ma takÅ¼e nastÄ™pujÄ…ce ograniczenia:
+- brak obsÅ‚ugi jasnoÅ›ci, kontrastu, korekcji gamma
+- maÅ‚o wydajne algorytmy wyboru znakÃ³w
+- brak obsÅ‚ugi klawiatury w trybie surowym
 
 %package plugin-GL
 Summary:	GL plugin for libcaca library
-Summary(pl):	Wtyczka GL dla biblioteki libcaca
+Summary(pl.UTF-8):   Wtyczka GL dla biblioteki libcaca
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description plugin-GL
 GL plugin for libcaca library.
 
-%description plugin-GL -l pl
+%description plugin-GL -l pl.UTF-8
 Wtyczka GL dla biblioteki libcaca.
 
 %package plugin-X11
 Summary:	X11 plugin for libcaca library
-Summary(pl):	Wtyczka X11 dla biblioteki libcaca
+Summary(pl.UTF-8):   Wtyczka X11 dla biblioteki libcaca
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description plugin-X11
 X11 plugin for libcaca library.
 
-%description plugin-X11 -l pl
+%description plugin-X11 -l pl.UTF-8
 Wtyczka X11 dla biblioteki libcaca.
 
 %package img
 Summary:	libcaca-based image viewer and converter
-Summary(pl):	Przegl±darka i konwerter obrazków oparte na libcaca
+Summary(pl.UTF-8):   PrzeglÄ…darka i konwerter obrazkÃ³w oparte na libcaca
 Group:		Applications/Graphics
 Requires:	%{name} = %{version}-%{release}
 
@@ -92,13 +92,13 @@ Requires:	%{name} = %{version}-%{release}
 libcaca-based image viewer and converter. They use imlib2 to load
 images.
 
-%description img -l pl
-Przegl±darka i konwerter obrazków oparte na libcaca. Do wczytywania
-obrazków u¿ywaj± biblioteki imlib2.
+%description img -l pl.UTF-8
+PrzeglÄ…darka i konwerter obrazkÃ³w oparte na libcaca. Do wczytywania
+obrazkÃ³w uÅ¼ywajÄ… biblioteki imlib2.
 
 %package devel
 Summary:	Header files for libcaca library
-Summary(pl):	Pliki nag³ówkowe biblioteki libcaca
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe biblioteki libcaca
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	slang-devel >= 2.0.0
@@ -106,36 +106,36 @@ Requires:	slang-devel >= 2.0.0
 %description devel
 Header files for libcaca library.
 
-%description devel -l pl
-Pliki nag³ówkowe biblioteki libcaca.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe biblioteki libcaca.
 
 %package static
 Summary:	Static libcaca library
-Summary(pl):	Statyczna biblioteka libcaca
+Summary(pl.UTF-8):   Statyczna biblioteka libcaca
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static libcaca library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka libcaca.
 
 %package c++
 Summary:	C++ bindings for libcaca
-Summary(pl):	Wi±zania C++ do libcaca
+Summary(pl.UTF-8):   WiÄ…zania C++ do libcaca
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description c++
 C++ bindings for libcaca.
 
-%description c++ -l pl
-Wi±zania C++ do libcaca.
+%description c++ -l pl.UTF-8
+WiÄ…zania C++ do libcaca.
 
 %package c++-devel
 Summary:	C++ bindings for libcaca - header files
-Summary(pl):	Wi±zania C++ do libcaca - pliki nag³ówkowe
+Summary(pl.UTF-8):   WiÄ…zania C++ do libcaca - pliki nagÅ‚Ã³wkowe
 Group:		Development/Libraries
 Requires:	%{name}-c++ = %{version}-%{release}
 Requires:	%{name}-devel = %{version}-%{release}
@@ -144,20 +144,20 @@ Requires:	libstdc++-devel
 %description c++-devel
 C++ bindings for libcaca - header files.
 
-%description c++-devel -l pl
-Wi±zania C++ do libcaca - pliki nag³ówkowe.
+%description c++-devel -l pl.UTF-8
+WiÄ…zania C++ do libcaca - pliki nagÅ‚Ã³wkowe.
 
 %package c++-static
 Summary:	C++ bindings for libcaca - static libraries
-Summary(pl):	Wi±zania C++ do libcaca - biblioteki statyczne
+Summary(pl.UTF-8):   WiÄ…zania C++ do libcaca - biblioteki statyczne
 Group:		Development/Libraries
 Requires:	%{name}-c++-devel = %{version}-%{release}
 
 %description c++-static
 C++ bindings for libcaca - static libraries.
 
-%description c++-static -l pl
-Wi±zania C++ do libcaca - biblioteki statyczne.
+%description c++-static -l pl.UTF-8
+WiÄ…zania C++ do libcaca - biblioteki statyczne.
 
 %prep
 %setup -q -n %{name}-%{version}.%{bver}
