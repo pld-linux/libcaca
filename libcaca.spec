@@ -1,5 +1,5 @@
 Summary:	Graphics library that outputs text instead of pixels
-Summary(pl.UTF-8):   Biblioteka graficzna wyświetlająca tekst zamiast pikseli
+Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.9
 Release:	2
@@ -56,7 +56,7 @@ Ale libcaca ma także następujące ograniczenia:
 
 %package devel
 Summary:	Header files for libcaca library
-Summary(pl.UTF-8):   Pliki nagłówkowe biblioteki libcaca
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libcaca
 Group:		Development/Libraries
 # to be restored when switching to shared lib
 #Requires:	%{name} = %{version}-%{release}
@@ -70,7 +70,7 @@ Pliki nagłówkowe biblioteki libcaca.
 
 %package static
 Summary:	Static libcaca library
-Summary(pl.UTF-8):   Statyczna biblioteka libcaca
+Summary(pl.UTF-8):	Statyczna biblioteka libcaca
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
