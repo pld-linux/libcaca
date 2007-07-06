@@ -10,10 +10,10 @@ Source0:	http://libcaca.zoy.org/files/%{name}-%{version}.%{bver}.tar.gz
 # Source0-md5:	94f3ae45b9d7fed43a6511452e880937
 URL:		http://libcaca.zoy.org/
 BuildRequires:	OpenGL-devel
-BuildRequires:	OpenGL-glut-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	doxygen
+BuildRequires:	freeglut-devel >= 2.0.0
 BuildRequires:	imlib2-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
@@ -63,6 +63,7 @@ Summary:	GL plugin for libcaca library
 Summary(pl.UTF-8):   Wtyczka GL dla biblioteki libcaca
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	freeglut >= 2.0.0
 
 %description plugin-GL
 GL plugin for libcaca library.
