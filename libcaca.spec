@@ -170,7 +170,6 @@ Wiązania C++ do libcaca - biblioteki statyczne.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-gl \
 	--disable-ncurses \
 	--enable-cxx \
 	--enable-gl \
