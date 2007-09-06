@@ -3,7 +3,7 @@ Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
 %define	bver	beta11
-Release:	0.%{bver}.1
+Release:	0.%{bver}.2
 License:	WTFPL
 Group:		Libraries
 Source0:	http://libcaca.zoy.org/files/%{name}-%{version}.%{bver}.tar.gz
