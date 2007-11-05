@@ -2,12 +2,12 @@ Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
-%define	bver	beta11
-Release:	0.%{bver}.2
+%define	bver	beta12
+Release:	0.%{bver}.1
 License:	WTFPL
 Group:		Libraries
 Source0:	http://libcaca.zoy.org/files/%{name}-%{version}.%{bver}.tar.gz
-# Source0-md5:	94f3ae45b9d7fed43a6511452e880937
+# Source0-md5:	fde7e63c592314ff737d125bdfe522f3
 URL:		http://libcaca.zoy.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf >= 2.50
