@@ -1,13 +1,14 @@
+%include	/usr/lib/rpm/macros.mono
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
-%define	bver	beta12
-Release:	0.%{bver}.1
+%define	subver	beta13
+Release:	0.%{subver}.1
 License:	WTFPL
 Group:		Libraries
-Source0:	http://libcaca.zoy.org/files/%{name}-%{version}.%{bver}.tar.gz
-# Source0-md5:	fde7e63c592314ff737d125bdfe522f3
+Source0:	http://libcaca.zoy.org/files/%{name}-%{version}.%{subver}.tar.gz
+# Source0-md5:	39e27737a51d0cf309675d948b1bde4e
 URL:		http://libcaca.zoy.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf >= 2.50
@@ -17,6 +18,10 @@ BuildRequires:	freeglut-devel >= 2.0.0
 BuildRequires:	imlib2-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
+BuildRequires:	mono-csharp
+BuildRequires:	rpmbuild(macros) >= 1.272
+BuildRequires:	rpmbuild(monoautodeps)
+BuildRequires:	ruby-devel
 BuildRequires:	slang-devel >= 2.0.0
 # shouldn't these be in doxygen requirements?
 BuildRequires:	tetex-fonts-jknappen
@@ -160,8 +165,34 @@ C++ bindings for libcaca - static libraries.
 %description c++-static -l pl.UTF-8
 Wiązania C++ do libcaca - biblioteki statyczne.
 
+%package -n dotnet-caca-sharp
+Summary:	C# bindings for libcaca
+Summary(pl.UTF-8):	Wiązania C# do libcaca
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+Requires:	mono
+
+%description -n dotnet-caca-sharp
+C# bindings for libcaca.
+
+%description -n dotnet-caca-sharp -l pl.UTF-8
+Wiązania C# do libcaca.
+
+%package -n ruby-caca
+Summary:	Ruby bindings for libcaca
+Summary(pl.UTF-8):	Wiązania języka Ruby do libcaca
+Group:		Development/Languages
+Requires:	%{name} = %{version}-%{release}
+%{?ruby_ver_requires_eq}
+
+%description -n ruby-caca
+Ruby bindings for libcaca.
+
+%description -n ruby-caca -l pl.UTF-8
+Wiązania języka Ruby do libcaca.
+
 %prep
-%setup -q -n %{name}-%{version}.%{bver}
+%setup -q -n %{name}-%{version}.%{subver}
 
 %build
 %{__libtoolize}
@@ -192,6 +223,7 @@ rm -f $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
 echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/caca/*.{a,la}
+rm -f $RPM_BUILD_ROOT%{ruby_sitearchdir}/*.{a,la}
 # man3 pages have too common base names to be included
 rm -f $RPM_BUILD_ROOT%{_mandir}/man3/*.3caca
 rm -rf $RPM_BUILD_ROOT%{_docdir}/libcucul-dev
@@ -213,7 +245,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/cacaplay
 %attr(755,root,root) %{_bindir}/cacaserver
 %attr(755,root,root) %{_libdir}/libcaca.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcaca.so.0
 %attr(755,root,root) %{_libdir}/libcucul.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcucul.so.0
 %dir %{_libdir}/caca
 %{_datadir}/%{name}
 %{_mandir}/man1/cacademo.1*
@@ -232,9 +266,9 @@ rm -rf $RPM_BUILD_ROOT
 %files img
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/cacaview
-%attr(755,root,root) %{_bindir}/img2irc
+%attr(755,root,root) %{_bindir}/img2txt
 %{_mandir}/man1/cacaview.1*
-%{_mandir}/man1/img2irc.1*
+%{_mandir}/man1/img2txt.1*
 
 %files devel
 %defattr(644,root,root,755)
@@ -260,7 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 %files c++
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcaca++.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcaca++.so.0
 %attr(755,root,root) %{_libdir}/libcucul++.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcucul++.so.0
 
 %files c++-devel
 %defattr(644,root,root,755)
@@ -275,3 +311,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libcaca++.a
 %{_libdir}/libcucul++.a
+
+%files -n dotnet-caca-sharp
+%defattr(644,root,root,755)
+%{_libdir}/caca-sharp
+%{_libdir}/cucul-sharp
+
+%files -n ruby-caca
+%defattr(644,root,root,755)
+%{ruby_sitelibdir}/caca.rb
+%attr(755,root,root) %{ruby_sitearchdir}/caca.so
+%attr(755,root,root) %{ruby_sitearchdir}/cucul.so
