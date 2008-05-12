@@ -1,4 +1,17 @@
+#
+# Conditional build:
+%bcond_without	dotnet		# don't build mono plugin
+#
+%ifnarch %{ix86} %{x8664} alpha arm hppa ia64 mips ppc s390 s390x sparc sparcv9
+%undefine	with_dotnet
+%endif
+%ifarch i386
+%undefine	with_dotnet
+%endif
+
+%if %{with dotnet}
 %include	/usr/lib/rpm/macros.mono
+%endif
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
@@ -18,7 +31,7 @@ BuildRequires:	freeglut-devel >= 2.0.0
 BuildRequires:	imlib2-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
-BuildRequires:	mono-csharp
+%{?with_dotnet:BuildRequires:	mono-csharp}
 BuildRequires:	rpmbuild(macros) >= 1.272
 BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	ruby-devel
@@ -28,8 +41,6 @@ BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-makeindex
 BuildRequires:	tetex-metafont
 BuildRequires:	xorg-lib-libX11-devel
-ExclusiveArch:	%{ix86} %{x8664} alpha arm hppa ia64 mips ppc s390 s390x sparc sparcv9
-ExcludeArch:	i386
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fomit-frame-pointer
@@ -204,11 +215,12 @@ Wiązania języka Ruby do libcaca.
 %{__automake}
 %configure \
 	--disable-ncurses \
-	--enable-cxx \
+	--%{!?with_dotnet:dis}%{?with_dotnet:en}able-cxx \
 	--enable-gl \
 	--enable-plugins \
 	--enable-slang \
 	--enable-x11
+
 
 # ObjC file not used, use plain CC to link library to avoid C++/ObjC deps
 %{__make} \
@@ -314,10 +326,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libcaca++.a
 %{_libdir}/libcucul++.a
 
+%if %{with dotnet}
 %files -n dotnet-caca-sharp
 %defattr(644,root,root,755)
 %{_libdir}/caca-sharp
 %{_libdir}/cucul-sharp
+%endif
 
 %files -n ruby-caca
 %defattr(644,root,root,755)
