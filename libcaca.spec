@@ -213,7 +213,8 @@ Wiązania języka Ruby do libcaca.
 %{__automake}
 %configure \
 	--disable-ncurses \
-	--%{!?with_dotnet:dis}%{?with_dotnet:en}able-cxx \
+	--%{!?with_dotnet:dis}%{?with_dotnet:en}able-csharp \
+	--enable-cxx \
 	--enable-gl \
 	--enable-plugins \
 	--enable-slang \
