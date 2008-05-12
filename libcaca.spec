@@ -28,6 +28,8 @@ BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-makeindex
 BuildRequires:	tetex-metafont
 BuildRequires:	xorg-lib-libX11-devel
+ExclusiveArch:	%{ix86} %{x8664} alpha arm hppa ia64 mips ppc s390 s390x sparc sparcv9
+ExcludeArch:	i386
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fomit-frame-pointer
