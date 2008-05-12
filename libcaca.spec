@@ -9,9 +9,7 @@
 %undefine	with_dotnet
 %endif
 
-%if %{with dotnet}
-%include	/usr/lib/rpm/macros.mono
-%endif
+%{?with_dotnet:%include	/usr/lib/rpm/macros.mono}
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
