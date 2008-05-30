@@ -18,7 +18,7 @@ Version:	0.99
 Release:	0.%{subver}.1
 License:	WTFPL
 Group:		Libraries
-Source0:	http://libcaca.zoy.org/files/%{name}-%{version}.%{subver}.tar.gz
+Source0:	http://libcaca.zoy.org/files/libcaca/%{name}-%{version}.%{subver}.tar.gz
 # Source0-md5:	39e27737a51d0cf309675d948b1bde4e
 URL:		http://libcaca.zoy.org/
 BuildRequires:	OpenGL-devel
