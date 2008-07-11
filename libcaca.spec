@@ -14,12 +14,12 @@ Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
-%define	subver	beta13
+%define	subver	beta14
 Release:	0.%{subver}.1
 License:	WTFPL
 Group:		Libraries
 Source0:	http://libcaca.zoy.org/files/libcaca/%{name}-%{version}.%{subver}.tar.gz
-# Source0-md5:	39e27737a51d0cf309675d948b1bde4e
+# Source0-md5:	63f166b12d21c6cfc030be20ed4f7f44
 URL:		http://libcaca.zoy.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf >= 2.50
@@ -252,7 +252,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING ChangeLog NEWS NOTES README THANKS TODO
+%doc AUTHORS COPYING ChangeLog NEWS NOTES README THANKS
 %attr(755,root,root) %{_bindir}/cacademo
 %attr(755,root,root) %{_bindir}/cacafire
 %attr(755,root,root) %{_bindir}/cacaplay
@@ -294,6 +294,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/caca.h
 %{_includedir}/caca0.h
 %{_includedir}/cucul.h
+%{_includedir}/cucul_types.h
 %{_pkgconfigdir}/caca.pc
 %{_pkgconfigdir}/cucul.pc
 %{_mandir}/man1/caca-config.1*
@@ -319,6 +320,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libcucul++.la
 %{_includedir}/caca++.h
 %{_includedir}/cucul++.h
+%{_pkgconfigdir}/caca++.pc
+%{_pkgconfigdir}/cucul++.pc
 
 %files c++-static
 %defattr(644,root,root,755)
