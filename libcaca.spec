@@ -103,7 +103,6 @@ Wtyczka X11 dla biblioteki libcaca.
 Summary:	libcaca-based image viewer and converter
 Summary(pl.UTF-8):	Przeglądarka i konwerter obrazków oparte na libcaca
 Group:		Applications/Graphics
-Requires:	%{name} = %{version}-%{release}
 
 %description img
 libcaca-based image viewer and converter. They use imlib2 to load
@@ -211,6 +210,8 @@ Wiązania języka Ruby do libcaca.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
+# NOTE: ncurses driver builds, but there's no color when linked against
+# ABI 6. While caca defaults to ncurses this must be disabled until fixed.
 %configure \
 	--disable-ncurses \
 	--%{!?with_dotnet:dis}%{?with_dotnet:en}able-csharp \
