@@ -20,6 +20,7 @@ License:	WTFPL
 Group:		Libraries
 Source0:	http://libcaca.zoy.org/files/libcaca/%{name}-%{version}.%{subver}.tar.gz
 # Source0-md5:	3953bf4a803747b63a99f50125563151
+Patch0:		install.patch
 URL:		http://libcaca.zoy.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf >= 2.50
@@ -203,6 +204,7 @@ Wiązania języka Ruby do libcaca.
 
 %prep
 %setup -q -n %{name}-%{version}.%{subver}
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -241,6 +243,24 @@ rm -f $RPM_BUILD_ROOT%{ruby_sitearchdir}/*.{a,la}
 # man3 pages have too common base names to be included
 rm -f $RPM_BUILD_ROOT%{_mandir}/man3/*.3caca
 rm -rf $RPM_BUILD_ROOT%{_docdir}/libcucul-dev
+
+cd $RPM_BUILD_ROOT%{_libdir}
+for i in libcaca*.so.*.*.*; do
+	ln -sf $i $(echo $i |sed 's/caca/cucul/')
+done
+ln -sf libcaca.a	$RPM_BUILD_ROOT%{_libdir}/libcucul.a
+ln -sf libcaca.la	$RPM_BUILD_ROOT%{_libdir}/libcucul.la
+ln -sf libcaca.so	$RPM_BUILD_ROOT%{_libdir}/libcucul.so
+ln -sf libcaca.so.0 	$RPM_BUILD_ROOT%{_libdir}/libcucul.so.0
+ln -sf libcaca++.a	$RPM_BUILD_ROOT%{_libdir}/libcucul++.a
+ln -sf libcaca++.la	$RPM_BUILD_ROOT%{_libdir}/libcucul++.la
+ln -sf libcaca++.so 	$RPM_BUILD_ROOT%{_libdir}/libcucul++.so
+ln -sf libcaca++.so.0 	$RPM_BUILD_ROOT%{_libdir}/libcucul++.so.0
+ln -sf caca-sharp 	$RPM_BUILD_ROOT%{_libdir}/cucul-sharp
+ln -sf caca++.h 	$RPM_BUILD_ROOT%{_includedir}/cucul++.h
+ln -sf caca_types.h 	$RPM_BUILD_ROOT%{_includedir}/cucul_types.h
+#ln -sf caca_types++.h 	$RPM_BUILD_ROOT%{_includedir}/cucul_types++.h
+ln -sf caca.so 		$RPM_BUILD_ROOT%{ruby_sitearchdir}/cucul.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -294,6 +314,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libcucul.la
 %{_includedir}/caca.h
 %{_includedir}/caca0.h
+%{_includedir}/caca_types.h
 %{_includedir}/cucul.h
 %{_includedir}/cucul_types.h
 %{_pkgconfigdir}/caca.pc
