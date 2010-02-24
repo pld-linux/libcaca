@@ -31,6 +31,7 @@ BuildRequires:	imlib2-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 %{?with_dotnet:BuildRequires:	mono-csharp}
+BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.272
 BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	ruby-devel
@@ -60,10 +61,10 @@ But libcaca also has the following limitations:
 - no raw keyboard support
 
 %description -l pl.UTF-8
-Biblioteka libcaca to biblioteka graficzna wyświetlająca tekst
-zamiast pikseli, dzięki czemu może działać na starszych kartach
-graficznych oraz terminalach tekstowych. Pod tym względem jest
-podobna do słynnej biblioteki AAlib.
+Biblioteka libcaca to biblioteka graficzna wyświetlająca tekst zamiast
+pikseli, dzięki czemu może działać na starszych kartach graficznych
+oraz terminalach tekstowych. Pod tym względem jest podobna do słynnej
+biblioteki AAlib.
 
 Różnice w stosunku do AAlib są następujące:
 - 16 dostępnych kolorów dla znaków (256 par kolorów)
