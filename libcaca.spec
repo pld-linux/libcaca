@@ -32,9 +32,10 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 %{?with_dotnet:BuildRequires:	mono-csharp}
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.272
+BuildRequires:	rpmbuild(macros) >= 1.533
 BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	ruby-devel
+BuildRequires:	sed >= 4.0
 BuildRequires:	slang-devel >= 2.0.0
 # shouldn't these be in doxygen requirements?
 BuildRequires:	tetex-fonts-jknappen
@@ -205,6 +206,7 @@ Wiązania języka Ruby do libcaca.
 
 %prep
 %setup -q -n %{name}-%{version}.%{subver}
+%undos */Makefile.am
 %patch0 -p1
 
 %build
