@@ -1,31 +1,33 @@
 --- libcaca-0.99.beta16/caca/Makefile.am.orig	2008-10-18 14:49:52.000000000 +0200
 +++ libcaca-0.99.beta16/caca/Makefile.am	2010-02-24 21:31:41.372010500 +0100
-@@ -65,13 +65,6 @@
+@@ -65,14 +65,6 @@
  	driver/win32.c \
  	$(NULL)
  
 -install-exec-local:
 -	$(mkinstalldirs) $(DESTDIR)$(libdir)
--	. libcaca.la; \
+-	. ./libcaca.la || exit 1; \
 -	for x in $$library_names; do \
 -	  ln -sf $$x $(DESTDIR)$(libdir)/$$(echo $$x | sed 's/caca/cucul/g'); \
 -	done
+-	ln -sf libcaca.la $(DESTDIR)$(libdir)/libcucul.la
 -
  install-data-local:
  	$(mkinstalldirs) $(DESTDIR)$(pkgconfigdir)
  	ln -sf caca.pc $(DESTDIR)$(pkgconfigdir)/cucul.pc
 --- libcaca-0.99.beta16/cxx/Makefile.am.orig	2008-10-17 01:44:45.000000000 +0200
 +++ libcaca-0.99.beta16/cxx/Makefile.am	2010-02-24 21:31:49.485343884 +0100
-@@ -23,13 +23,6 @@
+@@ -23,14 +23,6 @@
  cxxtest_LDADD = libcaca++.la ../caca/libcaca.la
  
  if USE_CXX
 -install-exec-local:
 -	$(mkinstalldirs) $(DESTDIR)$(libdir)
--	. libcaca++.la; \
+-	. ./libcaca++.la || exit 1; \
 -	for x in $$library_names; do \
 -	  ln -sf $$x $(DESTDIR)$(libdir)/$$(echo $$x | sed 's/caca/cucul/g'); \
 -	done
+-	ln -sf libcaca++.la $(DESTDIR)$(libdir)/libcucul++.la
 -
  install-data-local:
  	$(mkinstalldirs) $(DESTDIR)$(pkgconfigdir)
