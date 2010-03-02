@@ -1,5 +1,5 @@
---- BUILD/libcaca-0.99.beta17/configure.ac~	2010-02-08 13:34:28.000000000 +0100
-+++ BUILD/libcaca-0.99.beta17/configure.ac	2010-03-02 17:34:37.239187424 +0100
+--- libcaca-0.99.beta17/configure.ac~	2010-02-08 13:34:28.000000000 +0100
++++ libcaca-0.99.beta17/configure.ac	2010-03-02 17:34:37.239187424 +0100
 @@ -469,7 +469,7 @@
  if test "${enable_ruby}" != "no"; then
    AC_PATH_PROG(RUBY, ruby, no)
