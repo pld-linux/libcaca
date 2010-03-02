@@ -220,6 +220,7 @@ Wiązania języka Ruby do libcaca.
 %configure \
 	--disable-ncurses \
 	--%{!?with_dotnet:dis}%{?with_dotnet:en}able-csharp \
+	--disable-java \
 	--enable-cxx \
 	--enable-gl \
 	--enable-plugins \
