@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	dotnet		# don't build mono plugin
+%bcond_with	dotnet		# don't build mono plugin
 #
 %ifnarch %{ix86} %{x8664} alpha arm hppa ia64 mips ppc s390 s390x sparc sparcv9
 %undefine	with_dotnet
