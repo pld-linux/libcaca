@@ -1,0 +1,11 @@
+--- BUILD/libcaca-0.99.beta17/configure.ac~	2010-02-08 13:34:28.000000000 +0100
++++ BUILD/libcaca-0.99.beta17/configure.ac	2010-03-02 17:34:37.239187424 +0100
+@@ -469,7 +469,7 @@
+ if test "${enable_ruby}" != "no"; then
+   AC_PATH_PROG(RUBY, ruby, no)
+   if test "${RUBY}" != "no"; then
+-    RUBY_CFLAGS="-I$(ruby -r rbconfig -e 'print Config::CONFIG@<:@"archdir"@:>@')"
++    RUBY_CFLAGS=`($RUBY -rmkmf -e 'puts "-I#$hdrdir/#{CONFIG["arch"]} -I#$hdrdir"') 2>/dev/null`
+     RUBY_LIBS="-L$(ruby -r rbconfig -e 'print Config::CONFIG@<:@"libdir"@:>@') -l$(ruby -r rbconfig -e 'print Config::CONFIG@<:@"RUBY_SO_NAME"@:>@')"
+     RUBY_SITEARCHDIR=`ruby -r rbconfig -e 'print Config::CONFIG@<:@"sitearchdir"@:>@'`
+     RUBY_SITELIBDIR=`ruby -r rbconfig -e 'print Config::CONFIG@<:@"sitelibdir"@:>@'`
