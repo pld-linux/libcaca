@@ -1,6 +1,7 @@
 #
 # Conditional build:
-%bcond_with	dotnet		# don't build mono plugin
+%bcond_without	dotnet		# C#/Mono binding
+%bcond_without	java		# Java binding
 #
 %ifnarch %{ix86} %{x8664} alpha arm hppa ia64 mips ppc s390 s390x sparc sparcv9
 %undefine	with_dotnet
@@ -14,12 +15,12 @@ Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
-%define	subver	beta17
-Release:	0.%{subver}.2
-License:	WTFPL
+%define	subver	beta18
+Release:	0.%{subver}.1
+License:	WTFPL v2
 Group:		Libraries
 Source0:	http://libcaca.zoy.org/files/libcaca/%{name}-%{version}.%{subver}.tar.gz
-# Source0-md5:	790d6e26b7950e15909fdbeb23a7ea87
+# Source0-md5:	93d35dbdb0527d4c94df3e9a02e865cc
 Patch0:		install.patch
 Patch1:		%{name}-ruby1.9.patch
 URL:		http://libcaca.zoy.org/
@@ -28,10 +29,14 @@ BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	doxygen
 BuildRequires:	freeglut-devel >= 2.0.0
+# not used
+#BuildRequires:	ftgl-devel >= 2.1.3
 BuildRequires:	imlib2-devel
+%{?with_java:BuildRequires:	jdk}
 BuildRequires:	libstdc++-devel
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:1.5
 %{?with_dotnet:BuildRequires:	mono-csharp}
+BuildRequires:	python-devel >= 2.2
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.533
 BuildRequires:	rpmbuild(monoautodeps)
@@ -43,6 +48,7 @@ BuildRequires:	tetex-fonts-jknappen
 BuildRequires:	tetex-makeindex
 BuildRequires:	tetex-metafont
 BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fomit-frame-pointer
@@ -192,6 +198,33 @@ C# bindings for libcaca.
 %description -n dotnet-caca-sharp -l pl.UTF-8
 Wiązania C# do libcaca.
 
+%package -n java-caca
+Summary:	Java bindings for libcaca
+Summary(pl.UTF-8):	Wiązania Javy do libcaca
+Group:		Libraries/Java
+Requires:	%{name} = %{version}-%{release}
+Requires:	jre
+
+%description -n java-caca
+Java bindings for libcaca.
+
+%description -n java-caca -l pl.UTF-8
+Wiązania Javy do libcaca.
+
+%package -n python-caca
+Summary:	Python bindings for libcaca
+Summary(pl.UTF-8):	Wiązania Pythona do libcaca
+Group:		Development/Languages/Python
+Requires:	%{name} = %{version}-%{release}
+# ctypes
+Requires:	python-modules
+
+%description -n python-caca
+Python bindings for libcaca.
+
+%description -n python-caca -l pl.UTF-8
+Wiązania Pythona do libcaca.
+
 %package -n ruby-caca
 Summary:	Ruby bindings for libcaca
 Summary(pl.UTF-8):	Wiązania języka Ruby do libcaca
@@ -221,10 +254,10 @@ Wiązania języka Ruby do libcaca.
 # ABI 6. While caca defaults to ncurses this must be disabled until fixed.
 %configure \
 	--disable-ncurses \
-	--%{!?with_dotnet:dis}%{?with_dotnet:en}able-csharp \
-	--disable-java \
+	--enable-csharp%{!?with_dotnet:=no} \
 	--enable-cxx \
 	--enable-gl \
+	--enable-java%{!?with_java:=no} \
 	--enable-plugins \
 	--enable-slang \
 	--enable-x11
@@ -232,26 +265,33 @@ Wiązania języka Ruby do libcaca.
 
 # ObjC file not used, use plain CC to link library to avoid C++/ObjC deps
 %{__make} \
-	OBJC="%{__cc}"
+	OBJC="%{__cc}" \
+	jnidir=%{_libdir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT \
+	jnidir=%{_libdir}
 
 # replace symlink by groff include
-rm -f $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
 echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/caca/*.{a,la}
-rm -f $RPM_BUILD_ROOT%{ruby_sitearchdir}/*.{a,la}
+# loadable modules
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/caca/*.{a,la}
+%{__rm} $RPM_BUILD_ROOT%{ruby_sitearchdir}/*.la
+%if %{with java}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libcaca-java.la
+%endif
 # man3 pages have too common base names to be included
-rm -f $RPM_BUILD_ROOT%{_mandir}/man3/*.3caca
-rm -rf $RPM_BUILD_ROOT%{_docdir}/libcucul-dev
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man3/*.3caca
+# packaged as %doc in -devel
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/lib{caca,cucul}-dev
 
 cd $RPM_BUILD_ROOT%{_libdir}
-for i in libcaca*.so.*.*.*; do
+for i in libcaca.so.*.*.* libcaca++.so.*.*.*; do
 	ln -sf $i $(echo $i |sed 's/caca/cucul/')
 done
 ln -sf libcaca.a	$RPM_BUILD_ROOT%{_libdir}/libcucul.a
@@ -262,11 +302,10 @@ ln -sf libcaca++.a	$RPM_BUILD_ROOT%{_libdir}/libcucul++.a
 ln -sf libcaca++.la	$RPM_BUILD_ROOT%{_libdir}/libcucul++.la
 ln -sf libcaca++.so 	$RPM_BUILD_ROOT%{_libdir}/libcucul++.so
 ln -sf libcaca++.so.0 	$RPM_BUILD_ROOT%{_libdir}/libcucul++.so.0
-ln -sf caca-sharp 	$RPM_BUILD_ROOT%{_libdir}/cucul-sharp
 ln -sf caca++.h 	$RPM_BUILD_ROOT%{_includedir}/cucul++.h
 ln -sf caca_types.h 	$RPM_BUILD_ROOT%{_includedir}/cucul_types.h
-#ln -sf caca_types++.h 	$RPM_BUILD_ROOT%{_includedir}/cucul_types++.h
-ln -sf caca.so 		$RPM_BUILD_ROOT%{ruby_sitearchdir}/cucul.so
+
+%py_postclean
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -277,9 +316,13 @@ rm -rf $RPM_BUILD_ROOT
 %post	c++ -p /sbin/ldconfig
 %postun	c++ -p /sbin/ldconfig
 
+%post	-n java-caca -p /sbin/ldconfig
+%postun	-n java-caca -p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog NEWS NOTES README THANKS
+%attr(755,root,root) %{_bindir}/cacaclock
 %attr(755,root,root) %{_bindir}/cacademo
 %attr(755,root,root) %{_bindir}/cacafire
 %attr(755,root,root) %{_bindir}/cacaplay
@@ -320,6 +363,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libcucul.la
 %{_includedir}/caca.h
 %{_includedir}/caca0.h
+%{_includedir}/caca_conio.h
 %{_includedir}/caca_types.h
 %{_includedir}/cucul.h
 %{_includedir}/cucul_types.h
@@ -359,12 +403,25 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with dotnet}
 %files -n dotnet-caca-sharp
 %defattr(644,root,root,755)
-%{_libdir}/caca-sharp
-%{_libdir}/cucul-sharp
+%{_prefix}/lib/mono/caca-sharp-0.0
+%{_prefix}/lib/mono/gac/caca-sharp
+%{_javadir}/libjava.jar
 %endif
+
+%if %{with dotnet}
+%files -n java-caca
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcaca-java.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcaca-java.so.0
+%attr(755,root,root) %{_libdir}/libcaca-java.so
+%endif
+
+%files -n python-caca
+%defattr(644,root,root,755)
+%dir %{py_sitescriptdir}/caca
+%{py_sitescriptdir}/caca/*.py[co]
 
 %files -n ruby-caca
 %defattr(644,root,root,755)
 %{ruby_sitelibdir}/caca.rb
 %attr(755,root,root) %{ruby_sitearchdir}/caca.so
-%attr(755,root,root) %{ruby_sitearchdir}/cucul.so
