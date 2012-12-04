@@ -229,3 +229,14 @@
      }                                                    \
      return x;                                            \
  }                                                        \
+--- libcaca-0.99.beta18/ruby/caca-font.c.orig	2010-02-16 00:49:54.000000000 +0100
++++ libcaca-0.99.beta18/ruby/caca-font.c	2012-12-04 21:33:34.698696928 +0100
+@@ -35,7 +35,7 @@
+     font = caca_load_font(StringValuePtr(name), 0);
+     if(font == NULL)
+     {
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+     }
+     _SELF = font;
+     return self;
