@@ -36,3 +36,196 @@
      }
      return flag;
  }
+--- libcaca-0.99.beta18/ruby/caca-canvas.c.orig	2012-12-04 19:55:24.012153037 +0100
++++ libcaca-0.99.beta18/ruby/caca-canvas.c	2012-12-04 21:28:19.848703487 +0100
+@@ -22,7 +22,7 @@
+ static VALUE x (VALUE self)                             \
+ {                                                       \
+     if( caca_##x (_SELF) <0)                            \
+-        rb_raise(rb_eRuntimeError, strerror(errno));    \
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));    \
+                                                         \
+     return self;                                        \
+ }
+@@ -58,7 +58,7 @@
+ 
+     if(canvas == NULL)
+     {
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+     }
+ 
+     _SELF = canvas;
+@@ -104,7 +104,7 @@
+ static VALUE gotoxy(VALUE self, VALUE x, VALUE y)
+ {
+     if( caca_gotoxy(_SELF, NUM2INT(x), NUM2INT(y)) <0) {
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+     }
+     return self;
+ }
+@@ -150,7 +150,7 @@
+ static VALUE set_attr(VALUE self, VALUE attr)
+ {
+     if(caca_set_attr(_SELF, NUM2ULONG(attr)) <0)
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+ 
+     return self;
+ }
+@@ -164,7 +164,7 @@
+ static VALUE put_attr(VALUE self, VALUE x, VALUE y, VALUE attr)
+ {
+     if(caca_put_attr(_SELF, NUM2INT(x), NUM2INT(y), NUM2ULONG(attr)) <0)
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+ 
+     return self;
+ }
+@@ -172,7 +172,7 @@
+ static VALUE set_color_ansi(VALUE self, VALUE fg, VALUE bg)
+ {
+     if(caca_set_color_ansi(_SELF, NUM2INT(fg), NUM2INT(bg)) <0)
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+ 
+     return self;
+ }
+@@ -180,7 +180,7 @@
+ static VALUE set_color_argb(VALUE self, VALUE fg, VALUE bg)
+ {
+     if(caca_set_color_argb(_SELF, NUM2UINT(fg), NUM2UINT(bg)) <0) {
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+     }
+     return self;
+ }
+@@ -234,7 +234,7 @@
+         cmask = NULL;
+ 
+     if(caca_blit(_SELF, NUM2INT(x), NUM2INT(y), csrc, cmask)<0)
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+ 
+     return self;
+ }
+@@ -243,7 +243,7 @@
+ {
+     if(caca_set_canvas_boundaries(_SELF, NUM2INT(x), NUM2INT(y), NUM2UINT(w), NUM2UINT(h))<0)
+     {
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+     }
+     return self;
+ }
+@@ -524,7 +524,7 @@
+ static VALUE set_frame(VALUE self, VALUE id)
+ {
+     if(caca_set_frame(_SELF, NUM2INT(id))<0)
+-        rb_raise(rb_eArgError, strerror(errno));
++        rb_raise(rb_eArgError, "%s", strerror(errno));
+ 
+     return self;
+ }
+@@ -543,7 +543,7 @@
+ static VALUE set_frame_name(VALUE self, VALUE name)
+ {
+     if(caca_set_frame_name(_SELF, StringValuePtr(name))<0)
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+ 
+     return self;
+ }
+@@ -557,7 +557,7 @@
+ static VALUE create_frame(VALUE self, VALUE id)
+ {
+     if(caca_create_frame(_SELF, NUM2INT(id))<0) {
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+     }
+     return self;
+ }
+@@ -565,7 +565,7 @@
+ static VALUE free_frame(VALUE self, VALUE id)
+ {
+     if(caca_free_frame(_SELF, NUM2INT(id))<0) {
+-        rb_raise(rb_eArgError, strerror(errno));
++        rb_raise(rb_eArgError, "%s", strerror(errno));
+     }
+     return self;
+ }
+@@ -602,7 +602,7 @@
+     long int bytes;
+     bytes = caca_import_canvas_from_memory (_SELF, StringValuePtr(data), RSTRING_LEN(StringValue(data)), StringValuePtr(format));
+     if(bytes <= 0)
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+ 
+     return self;
+ }
+@@ -612,7 +612,7 @@
+     long int bytes;
+     bytes = caca_import_area_from_memory (_SELF, NUM2INT(x), NUM2INT(y), StringValuePtr(data), RSTRING_LEN(StringValue(data)), StringValuePtr(format));
+     if(bytes <= 0)
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+ 
+     return self;
+ }
+@@ -622,7 +622,7 @@
+     long int bytes;
+     bytes = caca_import_canvas_from_file (_SELF, StringValuePtr(filename), StringValuePtr(format));
+     if(bytes <= 0)
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+ 
+     return self;
+ }
+@@ -632,7 +632,7 @@
+     long int bytes;
+     bytes = caca_import_area_from_file (_SELF, NUM2INT(x), NUM2INT(y), StringValuePtr(filename), StringValuePtr(format));
+     if(bytes <= 0)
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+ 
+     return self;
+ }
+--- libcaca-0.99.beta18/ruby/caca-dither.c.orig	2012-12-04 19:55:24.012153037 +0100
++++ libcaca-0.99.beta18/ruby/caca-dither.c	2012-12-04 21:29:14.038702358 +0100
+@@ -35,7 +35,7 @@
+     dither = caca_create_dither(NUM2UINT(bpp), NUM2UINT(w), NUM2UINT(h), NUM2UINT(pitch), NUM2ULONG(rmask), NUM2ULONG(gmask), NUM2ULONG(bmask), NUM2ULONG(amask));
+     if(dither == NULL)
+     {
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+     }
+     _SELF = dither;
+     return self;
+@@ -121,7 +121,7 @@
+         free(green);
+         free(blue);
+         free(alpha);
+-        rb_raise(rb_eRuntimeError, strerror(errno));
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));
+     }
+ 
+     free(red);
+@@ -142,7 +142,7 @@
+ static VALUE set_##x(VALUE self, VALUE x)               \
+ {                                                       \
+     if(caca_set_dither_##x(_SELF, (float)NUM2DBL(x))<0) \
+-        rb_raise(rb_eRuntimeError, strerror(errno));    \
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));    \
+                                                         \
+     return x;                                           \
+ }                                                       \
+@@ -163,7 +163,7 @@
+ {                                                        \
+     if(caca_set_dither_##x(_SELF, StringValuePtr(x))<0)  \
+     {                                                    \
+-        rb_raise(rb_eRuntimeError, strerror(errno));     \
++        rb_raise(rb_eRuntimeError, "%s", strerror(errno));     \
+     }                                                    \
+     return x;                                            \
+ }                                                        \
