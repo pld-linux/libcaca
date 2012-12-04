@@ -23,6 +23,7 @@ Source0:	http://libcaca.zoy.org/files/libcaca/%{name}-%{version}.%{subver}.tar.g
 # Source0-md5:	93d35dbdb0527d4c94df3e9a02e865cc
 Patch0:		install.patch
 Patch1:		%{name}-ruby1.9.patch
+Patch2:		%{name}-format.patch
 URL:		http://libcaca.zoy.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf >= 2.50
@@ -243,6 +244,7 @@ Wiązania języka Ruby do libcaca.
 %undos */Makefile.am
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
