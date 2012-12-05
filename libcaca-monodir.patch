@@ -1,0 +1,20 @@
+--- libcaca-0.99.beta18/caca-sharp/Makefile.am.orig	2012-12-04 19:55:23.995486370 +0100
++++ libcaca-0.99.beta18/caca-sharp/Makefile.am	2012-12-05 19:55:49.460351660 +0100
+@@ -1,7 +1,7 @@
+ 
+ # We need to install the .config file ourselves because of a gacutil
+ # bug (https://bugzilla.novell.com/show_bug.cgi?id=363341)
+-monodir = $(libdir)/mono/caca-sharp-0.0
++monodir = $(prefix)/lib/mono/caca-sharp-0.0
+ if USE_CSHARP
+ noinst_DATA = caca-sharp.dll caca-sharp.dll.config test.exe
+ endif
+@@ -34,7 +34,7 @@
+ if USE_CSHARP
+ install-data-local:
+ 	MONO_SHARED_DIR=$$HOME $(GACUTIL) -i caca-sharp.dll \
+-	  -package caca-sharp-0.0 -f -root $(DESTDIR)$(libdir)
++	  -package caca-sharp-0.0 -f -root $(DESTDIR)$(prefix)/lib
+ 	$(mkinstalldirs) $(DESTDIR)$(monodir)
+ 	sed -e 's@target="[^"]*/@target="@' < caca-sharp.dll.config > $(DESTDIR)$(monodir)/caca-sharp.dll.config
+ 
