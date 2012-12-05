@@ -44,10 +44,10 @@ BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	ruby-devel
 BuildRequires:	sed >= 4.0
 BuildRequires:	slang-devel >= 2.0.0
-# shouldn't these be in doxygen requirements?
-BuildRequires:	tetex-fonts-jknappen
-BuildRequires:	tetex-makeindex
-BuildRequires:	tetex-metafont
+BuildRequires:	texlive-fonts-jknappen
+BuildRequires:	texlive-format-pdflatex
+BuildRequires:	texlive-makeindex
+BuildRequires:	texlive-latex-ams
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
