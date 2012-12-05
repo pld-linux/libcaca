@@ -268,7 +268,7 @@ Wiązania języka Ruby do libcaca.
 
 
 # ObjC file not used, use plain CC to link library to avoid C++/ObjC deps
-%{__make} \
+%{__make} %{?with_java:-j1} \
 	CLASSPATH=$(pwd)/java \
 	OBJC="%{__cc}" \
 	jnidir=%{_libdir}
