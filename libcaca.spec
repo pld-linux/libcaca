@@ -15,17 +15,14 @@ Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
-%define	subver	beta18
+%define	subver	beta19
 Release:	0.%{subver}.1
 License:	WTFPL v2
 Group:		Libraries
-Source0:	http://libcaca.zoy.org/files/libcaca/%{name}-%{version}.%{subver}.tar.gz
-# Source0-md5:	93d35dbdb0527d4c94df3e9a02e865cc
-Patch0:		install.patch
-Patch1:		%{name}-ruby1.9.patch
-Patch2:		%{name}-format.patch
-Patch3:		%{name}-monodir.patch
-URL:		http://libcaca.zoy.org/
+Source0:	http://caca.zoy.org/raw-attachment/wiki/libcaca/%{name}-%{version}.%{subver}.tar.gz
+# Source0-md5:	a3d4441cdef488099f4a92f4c6c1da00
+Patch0:		%{name}-monodir.patch
+URL:		http://caca.zoy.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -45,10 +42,10 @@ BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	ruby-devel
 BuildRequires:	sed >= 4.0
 BuildRequires:	slang-devel >= 2.0.0
-BuildRequires:	texlive-fonts-jknappen
-BuildRequires:	texlive-format-pdflatex
-BuildRequires:	texlive-makeindex
-BuildRequires:	texlive-latex-ams
+#BuildRequires:	texlive-fonts-jknappen
+#BuildRequires:	texlive-format-pdflatex
+#BuildRequires:	texlive-makeindex
+#BuildRequires:	texlive-latex-ams
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -242,11 +239,7 @@ Wiązania języka Ruby do libcaca.
 
 %prep
 %setup -q -n %{name}-%{version}.%{subver}
-%undos */Makefile.am
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 %{__libtoolize}
@@ -256,21 +249,25 @@ Wiązania języka Ruby do libcaca.
 %{__automake}
 # NOTE: ncurses driver builds, but there's no color when linked against
 # ABI 6. While caca defaults to ncurses this must be disabled until fixed.
+# NOTE: as of libcaca 0.99beta19 / doxygen 1.8.7 pdflatex fails - use
+# KPSEWHICH hack to disable PDF documentation.
 %configure \
-	--disable-ncurses \
+	KPSEWHICH=/nonexisting \
 	--enable-csharp%{!?with_dotnet:=no} \
 	--enable-cxx \
 	--enable-gl \
 	--enable-java%{!?with_java:=no} \
+	--disable-ncurses \
 	--enable-plugins \
 	--enable-slang \
 	--enable-x11
 
-
+# --disable-silent-rules doesn't work due to AM_DEFAULT_VERBOSITY=0; use V=1 instead
 # ObjC file not used, use plain CC to link library to avoid C++/ObjC deps
 %{__make} %{?with_java:-j1} \
 	CLASSPATH=$(pwd)/java \
 	OBJC="%{__cc}" \
+	V=1 \
 	jnidir=%{_libdir}
 
 %install
@@ -293,22 +290,7 @@ echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
 # man3 pages have too common base names to be included
 %{__rm} $RPM_BUILD_ROOT%{_mandir}/man3/*.3caca
 # packaged as %doc in -devel
-%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/lib{caca,cucul}-dev
-
-cd $RPM_BUILD_ROOT%{_libdir}
-for i in libcaca.so.*.*.* libcaca++.so.*.*.*; do
-	ln -sf $i $(echo $i |sed 's/caca/cucul/')
-done
-ln -sf libcaca.a	$RPM_BUILD_ROOT%{_libdir}/libcucul.a
-ln -sf libcaca.la	$RPM_BUILD_ROOT%{_libdir}/libcucul.la
-ln -sf libcaca.so	$RPM_BUILD_ROOT%{_libdir}/libcucul.so
-ln -sf libcaca.so.0 	$RPM_BUILD_ROOT%{_libdir}/libcucul.so.0
-ln -sf libcaca++.a	$RPM_BUILD_ROOT%{_libdir}/libcucul++.a
-ln -sf libcaca++.la	$RPM_BUILD_ROOT%{_libdir}/libcucul++.la
-ln -sf libcaca++.so 	$RPM_BUILD_ROOT%{_libdir}/libcucul++.so
-ln -sf libcaca++.so.0 	$RPM_BUILD_ROOT%{_libdir}/libcucul++.so.0
-ln -sf caca++.h 	$RPM_BUILD_ROOT%{_includedir}/cucul++.h
-ln -sf caca_types.h 	$RPM_BUILD_ROOT%{_includedir}/cucul_types.h
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/libcaca-dev
 
 %py_postclean
 
@@ -334,8 +316,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/cacaserver
 %attr(755,root,root) %{_libdir}/libcaca.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcaca.so.0
-%attr(755,root,root) %{_libdir}/libcucul.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libcucul.so.0
 %dir %{_libdir}/caca
 %{_datadir}/%{name}
 %{_mandir}/man1/cacademo.1*
@@ -363,47 +343,34 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/html/*
 %attr(755,root,root) %{_bindir}/caca-config
 %attr(755,root,root) %{_libdir}/libcaca.so
-%attr(755,root,root) %{_libdir}/libcucul.so
 %{_libdir}/libcaca.la
-%{_libdir}/libcucul.la
 %{_includedir}/caca.h
 %{_includedir}/caca0.h
 %{_includedir}/caca_conio.h
 %{_includedir}/caca_types.h
-%{_includedir}/cucul.h
-%{_includedir}/cucul_types.h
 %{_pkgconfigdir}/caca.pc
-%{_pkgconfigdir}/cucul.pc
 %{_mandir}/man1/caca-config.1*
 # man3 pages have too common base names to be included
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libcaca.a
-%{_libdir}/libcucul.a
 
 %files c++
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcaca++.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcaca++.so.0
-%attr(755,root,root) %{_libdir}/libcucul++.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libcucul++.so.0
 
 %files c++-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcaca++.so
-%attr(755,root,root) %{_libdir}/libcucul++.so
 %{_libdir}/libcaca++.la
-%{_libdir}/libcucul++.la
 %{_includedir}/caca++.h
-%{_includedir}/cucul++.h
 %{_pkgconfigdir}/caca++.pc
-%{_pkgconfigdir}/cucul++.pc
 
 %files c++-static
 %defattr(644,root,root,755)
 %{_libdir}/libcaca++.a
-%{_libdir}/libcucul++.a
 
 %if %{with dotnet}
 %files -n dotnet-caca-sharp
