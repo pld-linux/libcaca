@@ -10,13 +10,14 @@
 %undefine	with_dotnet
 %endif
 
+%define		rel	2
+%define	subver	beta19
 %{?with_dotnet:%include	/usr/lib/rpm/macros.mono}
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
 Version:	0.99
-%define	subver	beta19
-Release:	0.%{subver}.1
+Release:	0.%{subver}.%{rel}
 License:	WTFPL v2
 Group:		Libraries
 Source0:	http://caca.zoy.org/raw-attachment/wiki/libcaca/%{name}-%{version}.%{subver}.tar.gz
@@ -35,8 +36,8 @@ BuildRequires:	imlib2-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
 %{?with_dotnet:BuildRequires:	mono-csharp}
-BuildRequires:	python-devel >= 2.2
 BuildRequires:	pkgconfig
+BuildRequires:	python-devel >= 2.2
 BuildRequires:	rpmbuild(macros) >= 1.533
 BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	ruby-devel
@@ -44,8 +45,8 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	slang-devel >= 2.0.0
 #BuildRequires:	texlive-fonts-jknappen
 #BuildRequires:	texlive-format-pdflatex
-#BuildRequires:	texlive-makeindex
 #BuildRequires:	texlive-latex-ams
+#BuildRequires:	texlive-makeindex
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
