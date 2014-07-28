@@ -378,15 +378,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_prefix}/lib/mono/caca-sharp-0.0
 %{_prefix}/lib/mono/gac/caca-sharp
-%{_javadir}/libjava.jar
 %endif
 
-%if %{with dotnet}
+%if %{with java}
 %files -n java-caca
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcaca-java.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcaca-java.so.0
 %attr(755,root,root) %{_libdir}/libcaca-java.so
+%{_javadir}/libjava.jar
 %endif
 
 %files -n python-caca
