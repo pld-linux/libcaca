@@ -23,6 +23,7 @@ Group:		Libraries
 Source0:	http://caca.zoy.org/raw-attachment/wiki/libcaca/%{name}-%{version}.%{subver}.tar.gz
 # Source0-md5:	a3d4441cdef488099f4a92f4c6c1da00
 Patch0:		%{name}-monodir.patch
+Patch1:		ruby-vendordir.patch
 URL:		http://caca.zoy.org/
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf >= 2.50
@@ -230,7 +231,6 @@ Summary:	Ruby bindings for libcaca
 Summary(pl.UTF-8):	Wiązania języka Ruby do libcaca
 Group:		Development/Languages
 Requires:	%{name} = %{version}-%{release}
-%{?ruby_ver_requires_eq}
 
 %description -n ruby-caca
 Ruby bindings for libcaca.
@@ -241,6 +241,7 @@ Wiązania języka Ruby do libcaca.
 %prep
 %setup -q -n %{name}-%{version}.%{subver}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -284,7 +285,7 @@ echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
 
 # loadable modules
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/caca/*.{a,la}
-%{__rm} $RPM_BUILD_ROOT%{ruby_sitearchdir}/*.la
+%{__rm} $RPM_BUILD_ROOT%{ruby_vendorarchdir}/*.la
 %if %{with java}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libcaca-java.la
 %endif
@@ -396,5 +397,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n ruby-caca
 %defattr(644,root,root,755)
-%{ruby_sitelibdir}/caca.rb
-%attr(755,root,root) %{ruby_sitearchdir}/caca.so
+%{ruby_vendorlibdir}/caca.rb
+%attr(755,root,root) %{ruby_vendorarchdir}/caca.so
