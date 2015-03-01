@@ -2,7 +2,9 @@
 # Conditional build:
 %bcond_without	dotnet		# C#/Mono binding
 %bcond_without	java		# Java binding
-#
+%bcond_without	ruby		# Ruby binding
+%bcond_without	python		# Python binding
+
 %ifnarch %{ix86} %{x8664} alpha arm hppa ia64 mips ppc s390 s390x sparc sparcv9
 %undefine	with_dotnet
 %endif
@@ -33,15 +35,11 @@ BuildRequires:	freeglut-devel >= 2.0.0
 # not used
 #BuildRequires:	ftgl-devel >= 2.1.3
 BuildRequires:	imlib2-devel
-%{?with_java:BuildRequires:	jdk}
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
-%{?with_dotnet:BuildRequires:	mono-csharp}
 BuildRequires:	pkgconfig
-BuildRequires:	python-devel >= 2.2
 BuildRequires:	rpmbuild(macros) >= 1.533
 BuildRequires:	rpmbuild(monoautodeps)
-BuildRequires:	ruby-devel
 BuildRequires:	sed >= 4.0
 BuildRequires:	slang-devel >= 2.0.0
 #BuildRequires:	texlive-fonts-jknappen
@@ -50,6 +48,23 @@ BuildRequires:	slang-devel >= 2.0.0
 #BuildRequires:	texlive-makeindex
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	zlib-devel
+%if %{with dotnet}
+BuildRequires:	mono-csharp
+%endif
+%if %{with java}
+BuildRequires:	jdk
+BuildRequires:	rpm-javaprov
+# org_zoy_caca_Attribute.c:14:18: fatal error: caca.h: No such file or directory
+BuildRequires:	libcaca-devel
+%endif
+%if %{with python}
+BuildRequires:	python-devel >= 2.2
+BuildRequires:	rpm-pythonprov
+%endif
+%if %{with ruby}
+BuildRequires:	rpm-rubyprov
+BuildRequires:	ruby-devel
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fomit-frame-pointer
