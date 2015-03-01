@@ -12,7 +12,7 @@
 %undefine	with_dotnet
 %endif
 
-%define		rel	4
+%define		rel	5
 %define	subver	beta19
 %{?with_dotnet:%include	/usr/lib/rpm/macros.mono}
 Summary:	Graphics library that outputs text instead of pixels
