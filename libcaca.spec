@@ -12,7 +12,7 @@
 %undefine	with_dotnet
 %endif
 
-%define		rel	6
+%define		rel	7
 %define	subver	beta19
 %{?with_dotnet:%include	/usr/lib/rpm/macros.mono}
 Summary:	Graphics library that outputs text instead of pixels
@@ -270,6 +270,7 @@ Wiązania języka Ruby do libcaca.
 # KPSEWHICH hack to disable PDF documentation.
 %configure \
 	KPSEWHICH=/nonexisting \
+	%{?with_dotnet:CSC=/usr/bin/dmcs} \
 	--enable-csharp%{!?with_dotnet:=no} \
 	--enable-cxx \
 	--enable-gl \
