@@ -14,7 +14,6 @@
 
 %define		rel	9
 %define	subver	beta19
-%{?with_dotnet:%include	/usr/lib/rpm/macros.mono}
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
