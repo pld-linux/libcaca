@@ -12,7 +12,7 @@
 %undefine	with_dotnet
 %endif
 
-%define		rel	9
+%define		rel	10
 %define	subver	beta19
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
