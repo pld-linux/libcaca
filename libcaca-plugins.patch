@@ -1,0 +1,39 @@
+--- libcaca-0.99.beta20/caca/caca_internals.h.orig	2021-10-19 15:47:32.000000000 +0200
++++ libcaca-0.99.beta20/caca/caca_internals.h	2021-12-06 17:15:52.742419166 +0100
+@@ -252,7 +252,11 @@ extern int _caca_getticks(caca_timer_t *
+ /* Internal event functions */
+ extern void _caca_handle_resize(caca_display_t *);
+ #if defined(USE_SLANG) || defined(USE_NCURSES) || defined(USE_CONIO) || defined(USE_GL)
+-extern void _push_event(caca_display_t *, caca_privevent_t *);
++extern
++#if defined(CACA_ENABLE_VISIBILITY)
++__attribute__((visibility("default")))
++#endif
++void _push_event(caca_display_t *, caca_privevent_t *);
+ extern int _pop_event(caca_display_t *, caca_privevent_t *);
+ #endif
+ 
+--- libcaca-0.99.beta20/caca/driver/gl.c.orig	2015-01-17 12:51:01.000000000 +0100
++++ libcaca-0.99.beta20/caca/driver/gl.c	2021-12-06 17:16:26.072238603 +0100
+@@ -604,6 +604,9 @@ static void gl_compute_font(caca_display
+  * Driver initialisation
+  */
+ 
++#if defined(CACA_ENABLE_VISIBILITY)
++__attribute__((visibility("default")))
++#endif
+ int gl_install(caca_display_t *dp)
+ {
+ #if defined(HAVE_GETENV) && defined(GLUT_XLIB_IMPLEMENTATION)
+--- libcaca-0.99.beta20/caca/driver/x11.c.orig	2017-04-21 15:33:16.000000000 +0200
++++ libcaca-0.99.beta20/caca/driver/x11.c	2021-12-06 17:17:57.918407696 +0100
+@@ -966,6 +966,9 @@ static void x11_put_glyph(caca_display_t
+  * Driver initialisation
+  */
+ 
++#if defined(CACA_ENABLE_VISIBILITY)
++__attribute__((visibility("default")))
++#endif
+ int x11_install(caca_display_t *dp)
+ {
+ #if defined HAVE_GETENV

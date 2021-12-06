@@ -1,0 +1,11 @@
+--- libcaca-0.99.beta20/configure.ac.orig	2021-12-05 21:19:06.371427650 +0100
++++ libcaca-0.99.beta20/configure.ac	2021-12-05 21:23:03.620142363 +0100
+@@ -269,7 +269,7 @@ if test "${enable_cocoa}" != "no"; then
+    [ac_cv_my_have_cocoa="yes"])
+   CFLAGS="$save_CFLAGS"
+   if test "${ac_cv_my_have_cocoa}" = "yes"; then
+-    [[[ "$target_os" =~ [0-9]+ ]]] && darwin_ver="${BASH_REMATCH[[0]]}"
++    darwin_ver="$(echo "$target_os}" | sed -ne 's/.*\([0-9]\+\).*/\1/p')"
+     case x${target} in
+     xpowerpc*darwin*)
+       # 10.3 needed to link with X11

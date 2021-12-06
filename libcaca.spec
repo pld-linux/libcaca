@@ -4,16 +4,18 @@
 %bcond_without	java		# Java binding
 %bcond_without	ruby		# Ruby binding
 %bcond_without	python		# Python binding
+%bcond_without	ncurses		# ncurses driver
+%bcond_without	slang		# slang driver
 
-%ifnarch %{ix86} %{x8664} alpha arm hppa ia64 mips ppc s390 s390x sparc sparcv9
+%ifnarch %{ix86} %{x8664} alpha %{arm} hppa ia64 mips ppc s390 s390x sparc sparcv9
 %undefine	with_dotnet
 %endif
 %ifarch i386
 %undefine	with_dotnet
 %endif
 
-%define		rel	10
-%define	subver	beta19
+%define		rel	1
+%define	subver	beta20
 Summary:	Graphics library that outputs text instead of pixels
 Summary(pl.UTF-8):	Biblioteka graficzna wyświetlająca tekst zamiast pikseli
 Name:		libcaca
@@ -21,11 +23,14 @@ Version:	0.99
 Release:	0.%{subver}.%{rel}
 License:	WTFPL v2
 Group:		Libraries
-Source0:	http://caca.zoy.org/raw-attachment/wiki/libcaca/%{name}-%{version}.%{subver}.tar.gz
-# Source0-md5:	a3d4441cdef488099f4a92f4c6c1da00
+#Source0Download: https://github.com/cacalabs/libcaca/releases
+Source0:	https://github.com/cacalabs/libcaca/releases/download/v%{version}.%{subver}/%{name}-%{version}.%{subver}.tar.bz2
+# Source0-md5:	019c036ef038e7b5727b46f07fda739b
 Patch0:		%{name}-monodir.patch
 Patch1:		ruby-vendordir.patch
-URL:		http://caca.zoy.org/
+Patch2:		%{name}-sh.patch
+Patch3:		%{name}-plugins.patch
+URL:		http://caca.zoy.org/wiki/libcaca
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -36,11 +41,13 @@ BuildRequires:	freeglut-devel >= 2.0.0
 BuildRequires:	imlib2-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
+%{?with_ncurses:BuildRequires:	ncurses-devel >= 5}
 BuildRequires:	pkgconfig
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.533
 BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	sed >= 4.0
-BuildRequires:	slang-devel >= 2.0.0
+%{?with_slang:BuildRequires:	slang-devel >= 2.0.0}
 #BuildRequires:	texlive-fonts-jknappen
 #BuildRequires:	texlive-format-pdflatex
 #BuildRequires:	texlive-latex-ams
@@ -200,6 +207,18 @@ C++ bindings for libcaca - static libraries.
 %description c++-static -l pl.UTF-8
 Wiązania C++ do libcaca - biblioteki statyczne.
 
+%package apidocs
+Summary:	API documentation for libcaca library
+Summary(pl.UTF-8):	Dokumentacja API biblioteki libcaca
+Group:		Documentation
+BuildArch:	noarch
+
+%description apidocs
+API documentation for libcaca library.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API biblioteki libcaca.
+
 %package -n dotnet-caca-sharp
 Summary:	C# bindings for libcaca
 Summary(pl.UTF-8):	Wiązania C# do libcaca
@@ -256,6 +275,8 @@ Wiązania języka Ruby do libcaca.
 %setup -q -n %{name}-%{version}.%{subver}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %{__libtoolize}
@@ -263,20 +284,19 @@ Wiązania języka Ruby do libcaca.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-# NOTE: ncurses driver builds, but there's no color when linked against
-# ABI 6. While caca defaults to ncurses this must be disabled until fixed.
 # NOTE: as of libcaca 0.99beta19 / doxygen 1.8.7 pdflatex fails - use
 # KPSEWHICH hack to disable PDF documentation.
 %configure \
-	KPSEWHICH=/nonexisting \
 	%{?with_dotnet:CSC=/usr/bin/dmcs} \
+	KPSEWHICH=/nonexisting \
+	--disable-cocoa \
 	--enable-csharp%{!?with_dotnet:=no} \
 	--enable-cxx \
 	--enable-gl \
 	--enable-java%{!?with_java:=no} \
-	--disable-ncurses \
+	--enable-ncurses%{!?with_ncurses:=no} \
 	--enable-plugins \
-	--enable-slang \
+	--enable-slang%{!?with_slang:=no} \
 	--enable-x11
 
 # --disable-silent-rules doesn't work due to AM_DEFAULT_VERBOSITY=0; use V=1 instead
@@ -301,9 +321,8 @@ echo '.so cacafire.1' > $RPM_BUILD_ROOT%{_mandir}/man1/cacademo.1
 # loadable modules
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/caca/*.{a,la}
 %{__rm} $RPM_BUILD_ROOT%{ruby_vendorarchdir}/*.la
-%if %{with java}
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libcaca-java.la
-%endif
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libcaca*.la
 # man3 pages have too common base names to be included
 %{__rm} $RPM_BUILD_ROOT%{_mandir}/man3/*.3caca
 # packaged as %doc in -devel
@@ -325,7 +344,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING ChangeLog NEWS NOTES README THANKS
+%doc AUTHORS COPYING NEWS NOTES README THANKS
 %attr(755,root,root) %{_bindir}/cacaclock
 %attr(755,root,root) %{_bindir}/cacademo
 %attr(755,root,root) %{_bindir}/cacafire
@@ -357,10 +376,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/html/*
 %attr(755,root,root) %{_bindir}/caca-config
 %attr(755,root,root) %{_libdir}/libcaca.so
-%{_libdir}/libcaca.la
 %{_includedir}/caca.h
 %{_includedir}/caca0.h
 %{_includedir}/caca_conio.h
@@ -381,13 +398,16 @@ rm -rf $RPM_BUILD_ROOT
 %files c++-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcaca++.so
-%{_libdir}/libcaca++.la
 %{_includedir}/caca++.h
 %{_pkgconfigdir}/caca++.pc
 
 %files c++-static
 %defattr(644,root,root,755)
 %{_libdir}/libcaca++.a
+
+%files apidocs
+%defattr(644,root,root,755)
+%doc doc/html/*
 
 %if %{with dotnet}
 %files -n dotnet-caca-sharp
