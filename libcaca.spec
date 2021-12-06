@@ -45,7 +45,6 @@ BuildRequires:	libtool >= 2:1.5
 BuildRequires:	pkgconfig
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.533
-BuildRequires:	rpmbuild(monoautodeps)
 BuildRequires:	sed >= 4.0
 %{?with_slang:BuildRequires:	slang-devel >= 2.0.0}
 #BuildRequires:	texlive-fonts-jknappen
