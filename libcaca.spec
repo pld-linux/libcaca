@@ -30,6 +30,7 @@ Patch0:		%{name}-monodir.patch
 Patch1:		ruby-vendordir.patch
 Patch2:		%{name}-sh.patch
 Patch3:		%{name}-plugins.patch
+Patch4:		%{name}-javah.patch
 URL:		http://caca.zoy.org/wiki/libcaca
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf >= 2.50
@@ -57,7 +58,7 @@ BuildRequires:	zlib-devel
 BuildRequires:	mono-csharp
 %endif
 %if %{with java}
-BuildRequires:	jdk
+BuildRequires:	jdk >= 1.8
 BuildRequires:	rpm-javaprov
 # org_zoy_caca_Attribute.c:14:18: fatal error: caca.h: No such file or directory
 BuildRequires:	libcaca-devel
@@ -276,6 +277,7 @@ Wiązania języka Ruby do libcaca.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 %{__libtoolize}
